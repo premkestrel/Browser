@@ -8,7 +8,7 @@ var path=require ("path");
 // const uri="mongodb://localhost:27017/browserlist";
 const uri="mongodb+srv://user:user@cluster0-iomsi.mongodb.net/test?retryWrites=true&w=majority";
 // const uri="mongodb+srv://user:user@cluster0-iomsi.mongodb.net/test?retryWrites=true&w=majority";
-const port=process.env.port ;
+const port=process.env.PORT ;
 //declaring routes
 const route=require("./route/route")
 // //connect to mongodb
