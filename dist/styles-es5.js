@@ -465,7 +465,7 @@
   /***/
   function _(module, exports, __webpack_require__) {
     module.exports = __webpack_require__(
-    /*! F:\FinalYear_Browse\client\src\styles.css */
+    /*! F:\finalbrowser\client\src\styles.css */
     "./src/styles.css");
     /***/
   }

@@ -12,7 +12,11 @@ list.find(queryu,(err,data)=>{
   if(data.length!=0){
     list.find(query,(err,data)=>{
       if(data.length!=0){
-    res.send({msg:"valid credential",value:"1"})
+        if(data[0].username=="iamadmin"){
+          res.send({msg:"valid credential",value:"10"})
+        }else{
+          res.send({msg:"valid credential",value:"1"})
+        }
       }else{
         res.send({msg:"invalid password",value:"0"})
       }
@@ -26,43 +30,54 @@ list.find(queryu,(err,data)=>{
 
 //to fetch result from google based on query
 router.post('/list',(req,res,next)=>{
-  const params = {
-  access_key: "74e602f8fb7b3279338f8cc09a718dc6",
-  query: req.body.keyword
-}
-let val1=[];
-var query = { username: req.body.username ,password:req.body.password,keyword:req.body.keyword};
+  //
+  var k;
+  let query1 = { username: "iamadmin" ,password:"iamadmin"};
 
-    //find to check whether keyword matches any already stored value
-list.find(query,(err,data)=>{
-   if(data.length!=0){
-     for(let i of data[0].datas){
-      val1.push({"title":i.title,"url":i.url,"snippet":i.snippet});
-    }
-   
-   }
-})
-
-axios.get('http://api.serpstack.com/search', {params})
-  .then(response => {
-    const apiResponse = response.data;
-      //adding unique element to val1
-      response.data.organic_results.forEach(function(value) {
-        var existing =val1.filter(function(v, i) {
-            return (v.title == value.title);
+  list.find(query1,(err,data)=>{
+    if(data.length!=0){
+      k=data[0]["keyword"];
+      const params = {
+        access_key: k,
+        query: req.body.keyword
+      }
+      let val1=[];
+      var query = { username: req.body.username ,password:req.body.password,keyword:req.body.keyword};
+      
+          //find to check whether keyword matches any already stored value
+      list.find(query,(err,data)=>{
+         if(data.length!=0){
+           for(let i of data[0].datas){
+            val1.push({"title":i.title,"url":i.url,"snippet":i.snippet});
+          }
+         
+         }
+      })
+      
+      axios.get('http://api.serpstack.com/search', {params})
+        .then(response => {
+          const apiResponse = response.data;
+            //adding unique element to val1
+            response.data.organic_results.forEach(function(value) {
+              var existing =val1.filter(function(v, i) {
+                  return (v.title == value.title);
+              });
+              if (existing.length==0) {
+                   val1.push({"title":value.title,"url":value.url,"snippet":value.snippet})
+              } 
+          });
+            res.send({value:val1,error:null,st:1})
+        }).catch(error => {
+          if(val1.length!=0){
+            res.send({value:val1,error:"check your internet connection",st:0})
+          }else{
+            res.send({value:null,error:"check your internet connection",st:-1})
+          }
         });
-        if (existing.length==0) {
-             val1.push({"title":value.title,"url":value.url,"snippet":value.snippet})
-        } 
-    });
-      res.send({value:val1,error:null,st:1})
-  }).catch(error => {
-    if(val1.length!=0){
-      res.send({value:val1,error:"check your internet connection",st:0})
-    }else{
-      res.send({value:null,error:"check your internet connection",st:-1})
+
     }
-  });
+    
+  })
 })
 
 
@@ -157,6 +172,17 @@ list.find(query,(err,data)=>{
     })
    }
 })
+})
+router.post("/admin",(req,res)=>{
+  let query1={ username: req.body.username ,password:req.body.password}
+  var newvalues = { $set: {username: req.body.username ,password:req.body.password,keyword:req.body.keyword} };
+  list.updateOne(query1, newvalues,(err,result)=>{
+      if(err){
+          res.json({msg:"failed to add Access key is added!"});
+      }else{
+        res.json({msg:"successfully Access key is added!"});
+      }
+  })
 })
 
 module.exports=router;

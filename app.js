@@ -8,7 +8,7 @@ var path=require ("path");
 // const uri="mongodb://localhost:27017/browserlist";
 const uri="mongodb+srv://user:user@cluster0-iomsi.mongodb.net/test?retryWrites=true&w=majority";
 // const uri="mongodb+srv://user:user@cluster0-iomsi.mongodb.net/test?retryWrites=true&w=majority";
-const port=process.env.PORT ;
+const port=process.env.PORT ||3000;
 //declaring routes
 const route=require("./route/route")
 // //connect to mongodb
@@ -36,11 +36,13 @@ app.use(cors());
 //body-parser
 app.use(bodyparser.json());
 //static files
+// app.use(express.static(path.join(__dirname,'public')));
+
 app.use(express.static(path.join(__dirname,'dist')));
 
-app.get('/',(req,res)=>{
-    res.sendFile(path.join(__dirname,'dist/index.html'));
-})
+// app.get('/',(req,res)=>{
+//     res.sendFile(path.join(__dirname,'dist/client/index.html'));
+// })
 //routing
 app.use("/api",route);
 //testing server
