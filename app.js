@@ -11,21 +11,6 @@ const uri="mongodb+srv://user:user@cluster0-iomsi.mongodb.net/test?retryWrites=t
 const port=process.env.PORT ||3000;
 //declaring routes
 const route=require("./route/route")
-// //connect to mongodb
-// mongoose.set('useNewUrlParser', true);
-// mongoose.set('useUnifiedTopology', true);
-
-// mongoose.connect(uri);
-
-// mongoose.connection.on("connected",()=>{
-//     console.log("connected to database");
-// })
-// mongoose.connection.on("error",(err)=>{
-//     if(err){
-//         console.log("error in connection"+err)
-//     }
-// })
-
 mongoose
      .connect( uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true })
      .then(() => console.log( 'Database Connected' ))
@@ -40,9 +25,9 @@ app.use(bodyparser.json());
 
 app.use(express.static(path.join(__dirname,'dist')));
 
-// app.get('/',(req,res)=>{
-//     res.sendFile(path.join(__dirname,'dist/client/index.html'));
-// })
+app.get('/',(req,res)=>{
+    res.sendFile(path.join(__dirname,'dist/index.html'));
+})
 //routing
 app.use("/api",route);
 //testing server

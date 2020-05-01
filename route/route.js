@@ -185,4 +185,20 @@ router.post("/admin",(req,res)=>{
   })
 })
 
+router.get("/dblist",(req,res)=>{
+  list.find((err,data)=>{
+res.send(data);
+  })
+})
+
+router.delete("/dblist/:id",(req,res)=>{
+  list.deleteOne({_id:req.params.id},(err,result)=>{
+      if(err){
+          res.json(err);
+              }else{
+                  res.send({msg:"successfully removed"})
+              }
+  })
+})
+
 module.exports=router;
