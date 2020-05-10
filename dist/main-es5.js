@@ -807,7 +807,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           var ctx_r25 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
 
-          return ctx_r25.regv = 1;
+          return ctx_r25.rb();
         });
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "i", 22);
@@ -1688,6 +1688,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           }, function (err) {
             // console.log(err);
             _this.status = err.status;
+          });
+        }
+      }, {
+        key: "rb",
+        value: function rb() {
+          this.regv = 1;
+          this.registergroup.setValue({
+            username: null,
+            password: null,
+            ConfirmPassword: null
           });
         }
       }, {
